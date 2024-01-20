@@ -2,7 +2,7 @@ pkgname=fpc-cross-win64
 pkgver=3.2.2
 pkgrel=1
 arch=("x86_64")
-depends=("fpc" "fpc-src")
+makedepends=("fpc" "fpc-src")
 install=./fpc-cross-win64.install
 
 
