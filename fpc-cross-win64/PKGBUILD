@@ -1,0 +1,26 @@
+pkgname=fpc-cross-win64
+pkgver=3.2.2
+pkgrel=1
+arch=("x86_64")
+depends=("fpc" "fpc-src")
+install=./fpc-cross-win64.install
+
+
+prepare() {
+    cp -r /usr/lib/fpc/src/ fpc-src
+    mkdir -p out/usr
+}
+
+
+build() {
+    cd fpc-src
+    make clean all OS_TARGET=win64 CPU_TARGET=x86_64
+    make crossinstall OS_TARGET=win64 CPU_TARGET=x86_64 INSTALL_PREFIX=${srcdir}/out/usr
+}
+
+
+package() {
+    mkdir -p ${pkgdir}/usr/lib
+    cd ${srcdir}/out
+    cp -r ./usr/lib/* ${pkgdir}/usr/lib
+}

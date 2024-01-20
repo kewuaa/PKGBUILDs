@@ -1,0 +1,7 @@
+post_install() {
+    ln -sf /usr/lib/fpc/3.2.2/ppcrossx64 /bin/ppcrossx64
+}
+
+post_remove() {
+    unlink /bin/ppcrossx64
+}
