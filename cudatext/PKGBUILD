@@ -1,0 +1,19 @@
+pkgname=cudatext-qt5
+pkgver="1.209.0.1"
+pkgrel=1
+arch=("x86_64")
+source=("cudatext-qt5.deb::https://udomain.dl.sourceforge.net/project/cudatext/release/${pkgver}/cudatext_${pkgver}-1_qt5_amd64.deb")
+md5sums=("SKIP")
+depends=("qt5pas")
+
+
+prepare() {
+    ar -x cudatext-qt5.deb
+    mkdir data
+    tar -xf data.tar.xz -C data
+}
+
+
+package() {
+    cp -r ${srcdir}/data/* ${pkgdir}/
+}

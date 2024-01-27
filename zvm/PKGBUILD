@@ -1,0 +1,16 @@
+pkgname=zvm
+pkgver="v0.5.0"
+pkgrel=1
+arch=("x86_64")
+source=("zvm.tar::https://github.com/tristanisham/zvm/releases/download/${pkgver}/zvm-linux-amd64.tar")
+md5sums=("SKIP")
+
+
+prepare() {
+    tar -xf zvm.tar
+}
+
+
+package() {
+    install -D ${srcdir}/zvm ${pkgdir}/usr/bin/zvm
+}
