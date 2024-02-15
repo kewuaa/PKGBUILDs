@@ -1,0 +1,61 @@
+pkgname=dwm
+pkgver="0.1.0"
+pkgrel=1
+arch=("x86_64")
+install=dwm.install
+depends=(
+    # im support
+    "fcitx5"
+    "fcitx5-qt"
+    "fcitx5-gtk"
+    "fcitx5-configtool"
+    "fcitx5-chinese-addons"
+    # font
+    "ttf-firacode-nerd"
+    # alpha needed
+    "picom"
+    # adjust light
+    "acpilight"
+    # adjust volume
+    "alsa-utils"
+)
+makedepends=("git" "gcc")
+# optdepends=(
+#     "fcitx5-qt: Fcitx5 Qt Library (Qt5 & Qt6 integrations)"
+#     "fcitx5-gtk: Fcitx5 gtk im module and glib based dbus client library"
+#     "fcitx5-configtool: Configuration Tool for Fcitx5"
+#     "fcitx5-chinese-addons: Addons related to Chinese, including IME previous bundled inside fcitx4"
+# )
+
+
+prepare() {
+    git clone -b alpha --single-branch https://github.com/kewuaa/dwm.git
+    git clone -b alpha --single-branch https://github.com/kewuaa/st.git
+    git clone -b alpha --single-branch https://github.com/kewuaa/dmenu.git
+    git clone -b custom --single-branch https://github.com/kewuaa/slstatus.git
+    git clone -b custom --single-branch https://github.com/kewuaa/slock.git
+    sed -i "/tic -sx st.info/d" st/Makefile
+}
+
+
+build() {
+    lst=("dwm" "st" "dmenu" "slstatus" "slock")
+    for name in "${lst[@]}"
+    do
+        cd ${srcdir}/${name}
+        make
+    done
+}
+
+package() {
+    lst=("dwm" "st" "dmenu" "slstatus" "slock")
+    for name in "${lst[@]}"
+    do
+        cd ${srcdir}/${name}
+        make DESTDIR="${pkgdir}" install
+    done
+    mkdir -p ${pkgdir}/usr/share/terminfo
+    tic -sx -o ${pkgdir}/usr/share/terminfo ${srcdir}/st/st.info
+    mkdir -p $HOME/.dwm
+    cp -rf ${srcdir}/dwm/.dwm/* $HOME/.dwm
+}
