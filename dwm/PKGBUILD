@@ -18,6 +18,8 @@ depends=(
     "acpilight"
     # adjust volume
     "alsa-utils"
+    # screen locker
+    "xautolock"
 )
 makedepends=("git" "gcc")
 # optdepends=(
