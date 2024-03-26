@@ -2,7 +2,6 @@ pkgname=dwm
 pkgver="0.1.0"
 pkgrel=1
 arch=("x86_64")
-install=dwm.install
 depends=(
     # im support
     "fcitx5"
@@ -58,6 +57,8 @@ package() {
     done
     mkdir -p ${pkgdir}/usr/share/terminfo
     tic -sx -o ${pkgdir}/usr/share/terminfo ${srcdir}/st/st.info
-    mkdir -p $HOME/.dwm
-    cp -rf ${srcdir}/dwm/.dwm/* $HOME/.dwm
+    if [ ! -d "$HOME/.dwm" ]; then
+        mkdir -p $HOME/.dwm
+        cp -rf ${srcdir}/dwm/.dwm/* $HOME/.dwm
+    fi
 }
