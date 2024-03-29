@@ -13,6 +13,10 @@ depends=(
     "ttf-firacode-nerd"
     # alpha needed
     "picom"
+    # background image
+    "feh"
+    # snapshot
+    "flameshot"
     # adjust light
     "acpilight"
     # adjust volume
@@ -50,15 +54,23 @@ build() {
 
 package() {
     lst=("dwm" "st" "dmenu" "slstatus" "slock")
+    mkdir -p ${pkgdir}/usr/local/man
+    mkdir -p ${pkgdir}/usr/local/share
+    ln -s ${pkgdir}/usr/local/man ${pkgdir}/usr/local/share/man
     for name in "${lst[@]}"
     do
         cd ${srcdir}/${name}
         make DESTDIR="${pkgdir}" install
     done
+    unlink ${pkgdir}/usr/local/share/man
     mkdir -p ${pkgdir}/usr/share/terminfo
     tic -sx -o ${pkgdir}/usr/share/terminfo ${srcdir}/st/st.info
     if [ ! -d "$HOME/.dwm" ]; then
         mkdir -p $HOME/.dwm
         cp -rf ${srcdir}/dwm/.dwm/* $HOME/.dwm
+        chmod +x $HOME/.dwm/autostart.sh
     fi
+    if [ ! -d "$HOME/.wallpaper" ]; then
+        mkdir -p $HOME/.wallpaper
+        cp -rf ${srcdir}/dwm/wallpaper/* $HOME/.wallpaper
 }
