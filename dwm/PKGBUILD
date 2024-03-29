@@ -73,4 +73,5 @@ package() {
     if [ ! -d "$HOME/.wallpaper" ]; then
         mkdir -p $HOME/.wallpaper
         cp -rf ${srcdir}/dwm/wallpaper/* $HOME/.wallpaper
+    fi
 }
