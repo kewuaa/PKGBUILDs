@@ -19,12 +19,6 @@ depends=(
     "xautolock"
 )
 makedepends=("git" "gcc")
-# optdepends=(
-#     "fcitx5-qt: Fcitx5 Qt Library (Qt5 & Qt6 integrations)"
-#     "fcitx5-gtk: Fcitx5 gtk im module and glib based dbus client library"
-#     "fcitx5-configtool: Configuration Tool for Fcitx5"
-#     "fcitx5-chinese-addons: Addons related to Chinese, including IME previous bundled inside fcitx4"
-# )
 
 
 prepare() {
