@@ -59,13 +59,4 @@ package() {
     unlink ${pkgdir}/usr/local/share/man
     mkdir -p ${pkgdir}/usr/share/terminfo
     tic -sx -o ${pkgdir}/usr/share/terminfo ${srcdir}/st/st.info
-    if [ ! -d "$HOME/.dwm" ]; then
-        mkdir -p $HOME/.dwm
-        cp -rf ${srcdir}/dwm/.dwm/* $HOME/.dwm
-        chmod +x $HOME/.dwm/autostart.sh
-    fi
-    if [ ! -d "$HOME/.wallpaper" ]; then
-        mkdir -p $HOME/.wallpaper
-        cp -rf ${srcdir}/dwm/wallpaper/* $HOME/.wallpaper
-    fi
 }
