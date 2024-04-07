@@ -3,12 +3,6 @@ pkgver="0.1.0"
 pkgrel=1
 arch=("x86_64")
 depends=(
-    # im support
-    "fcitx5"
-    "fcitx5-qt"
-    "fcitx5-gtk"
-    "fcitx5-configtool"
-    "fcitx5-chinese-addons"
     # font
     "ttf-firacode-nerd"
     # alpha needed
