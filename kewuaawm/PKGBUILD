@@ -1,0 +1,112 @@
+pkgname=kewuaawm
+pkgver=1.0 pkgrel=1
+arch=("x86_64")
+depends=(
+    # window manager
+    "river"
+    # "playerctl"
+    # font
+    "ttf-firacode-nerd"
+    # adjust light
+    "brightnessctl"
+    # adjust volume
+    "wireplumber"
+    # default terminal
+    "foot"
+    # terminal file manager
+    "lf"
+    # power manager
+    "wlopm"
+    # screen lock
+    "swayidle" # "waylock"
+    # menu
+    # "wmenu"
+    # wallpaper manager
+    "swaybg"
+    # screen shot
+    "slurp" "grim"
+    # Day/night gamma adjustments
+    "gammastep"
+    # clipboard support
+    "wl-clipboard"
+    # screen share
+    "xdg-desktop-portal-wlr"
+    # notification daemon
+    "mako"
+    "wob"
+)
+optdepends=(
+    "wlr-randr: outputs configure"
+    "swayimg: image viewer"
+    "mpv: video player"
+    "wf-recorder: screen recorder"
+    "lswt: list wayland toplevels"
+)
+makedepends=(
+    "gcc"
+    "pkgconf"
+    "wayland-protocols"
+    "tllist"
+    "meson"
+    "ninja"
+    "zig"
+)
+
+
+build() {
+    # personal fork for wmenu
+    cd ${srcdir}
+    [ ! -d wmenu ] && git clone https://github.com/kewuaa/wmenu.git
+    cd wmenu
+    git pull
+    meson setup build --buildtype=release
+    meson compile -C build
+
+    # personal fork for waylock
+    cd ${srcdir}
+    [ ! -d waylock ] && git clone -b screenshot https://github.com/kewuaa/waylock.git
+    cd waylock
+    git pull
+    zig build -Doptimize=ReleaseSafe
+
+    cd ${srcdir}
+    [ ! -d slstatus ] && git clone https://github.com/kewuaa/slstatus.git
+    cd slstatus
+    git pull
+    make
+
+    cd ${srcdir}
+    [ ! -d dam ] && git clone https://codeberg.org/sewn/dam.git
+    cd dam
+    git pull
+    git submodule update --init --recursive
+    cp ${srcdir}/../dam_config.h config.h
+    make
+
+    cd ${srcdir}
+    [ ! -d rivercarro ] && git clone https://git.sr.ht/~novakane/rivercarro
+    cd rivercarro
+    git pull
+    zig build -Doptimize=ReleaseSafe
+}
+
+
+package() {
+    echo 'packaging kewuaawm'
+
+    cd ${srcdir}/wmenu
+    meson install -C build --destdir="${pkgdir}"
+
+    cd ${srcdir}/waylock
+    cp -r zig-out/* "${pkgdir}/usr"
+    mv "${pkgdir}/usr/etc" "${pkgdir}"
+
+    cd ${srcdir}/slstatus
+    make install DESTDIR="${pkgdir}"
+
+    cd ${srcdir}/dam
+    make install DESTDIR="${pkgdir}"
+
+    cd ${srcdir}/rivercarro
+    cp -r zig-out/* "${pkgdir}/usr"
+}
