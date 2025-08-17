@@ -41,6 +41,9 @@ optdepends=(
     "mpv: video player"
     "wf-recorder: screen recorder"
     "lswt: list wayland toplevels"
+    "stalonetray: standalone system tray"
+    "timeshift: system snapshot"
+    "cpupower: cpu frequency scaling"
 )
 makedepends=(
     "gcc"
