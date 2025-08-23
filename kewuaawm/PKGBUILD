@@ -36,6 +36,8 @@ depends=(
     "wob"
     # dependency for slstatus
     "alsa-lib"
+    # notification
+    "libnotify"
 )
 optdepends=(
     "wlr-randr: outputs configure"
