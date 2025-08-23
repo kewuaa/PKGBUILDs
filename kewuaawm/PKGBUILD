@@ -77,9 +77,10 @@ build() {
     zig build -Doptimize=ReleaseSafe
 
     cd ${srcdir}
-    [ ! -d slstatus ] && git clone https://github.com/kewuaa/slstatus.git
+    [ ! -d slstatus ] && git clone https://git.suckless.org/slstatus
     cd slstatus
     git pull
+    cp ${srcdir}/../slstatus_config.h config.h
     make
 
     cd ${srcdir}
