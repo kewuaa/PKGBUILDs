@@ -28,7 +28,7 @@ depends=(
     # Day/night gamma adjustments
     "gammastep"
     # clipboard support
-    "wl-clipboard"
+    "wl-clipboard" "cliphist"
     # screen share
     "xdg-desktop-portal-wlr"
     # notification daemon
