@@ -96,6 +96,12 @@ build() {
     cd rivercarro
     git pull
     zig build -Doptimize=ReleaseSafe
+
+    cd ${srcdir}
+    [ ! -d idlehack ] && git clone https://github.com/loops/idlehack.git
+    cd idlehack
+    git pull
+    make
 }
 
 
@@ -117,4 +123,8 @@ package() {
 
     cd ${srcdir}/rivercarro
     cp -r zig-out/* "${pkgdir}/usr"
+
+    cd ${srcdir}/idlehack
+    cp idlehack "${pkgdir}/usr/bin"
+    cp swayidle-inhibit "${pkgdir}/usr/bin"
 }
