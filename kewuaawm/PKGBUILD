@@ -48,6 +48,8 @@ optdepends=(
     "stalonetray: standalone system tray"
     "timeshift: system snapshot"
     "cpupower: cpu frequency scaling"
+    "chafa: image preview support for lf"
+    "poppler: pdf preview support for lf"
 )
 makedepends=(
     "gcc"
