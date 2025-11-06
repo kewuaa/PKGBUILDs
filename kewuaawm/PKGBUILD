@@ -34,8 +34,6 @@ depends=(
     # notification daemon
     "mako"
     "wob"
-    # dependency for slstatus
-    "alsa-lib"
     # notification
     "libnotify"
 )
@@ -79,13 +77,6 @@ build() {
     zig build -Doptimize=ReleaseSafe
 
     cd ${srcdir}
-    [ ! -d slstatus ] && git clone https://git.suckless.org/slstatus
-    cd slstatus
-    git pull
-    cp ${srcdir}/../slstatus_config.h config.h
-    make
-
-    cd ${srcdir}
     [ ! -d dam ] && git clone https://codeberg.org/sewn/dam.git
     cd dam
     git pull
@@ -116,9 +107,6 @@ package() {
     cd ${srcdir}/waylock
     cp -r zig-out/* "${pkgdir}/usr"
     mv "${pkgdir}/usr/etc" "${pkgdir}"
-
-    cd ${srcdir}/slstatus
-    make install DESTDIR="${pkgdir}"
 
     cd ${srcdir}/dam
     make install DESTDIR="${pkgdir}"
