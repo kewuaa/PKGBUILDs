@@ -18,7 +18,7 @@ depends=(
     # power manager
     "wlopm"
     # screen lock
-    "swayidle" # "waylock"
+    "swayidle" "waylock"
     # menu
     # "wmenu"
     # wallpaper manager
@@ -69,13 +69,6 @@ build() {
     meson setup build --buildtype=release
     meson compile -C build
 
-    # personal fork for waylock
-    cd ${srcdir}
-    [ ! -d waylock ] && git clone -b screenshot https://github.com/kewuaa/waylock.git
-    cd waylock
-    git pull
-    zig build -Doptimize=ReleaseSafe
-
     cd ${srcdir}
     [ ! -d dam ] && git clone https://codeberg.org/sewn/dam.git
     cd dam
@@ -103,10 +96,6 @@ package() {
 
     cd ${srcdir}/wmenu
     meson install -C build --destdir="${pkgdir}"
-
-    cd ${srcdir}/waylock
-    cp -r zig-out/* "${pkgdir}/usr"
-    mv "${pkgdir}/usr/etc" "${pkgdir}"
 
     cd ${srcdir}/dam
     make install DESTDIR="${pkgdir}"
