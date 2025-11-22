@@ -48,6 +48,7 @@ optdepends=(
     "cpupower: cpu frequency scaling"
     "chafa: image preview support for lf"
     "poppler: pdf preview support for lf"
+    "wshowkeys-mao-git: show keys on screen"
 )
 makedepends=(
     "gcc"
