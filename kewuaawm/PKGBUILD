@@ -1,5 +1,6 @@
 pkgname=kewuaawm
-pkgver=1.0 pkgrel=1
+pkgver=1.0
+pkgrel=1
 arch=("x86_64")
 depends=(
     # window manager
@@ -17,10 +18,12 @@ depends=(
     "lf"
     # power manager
     "wlopm"
+    # outputs config
+    "wlr-randr" "kanshi"
     # screen lock
     "swayidle" "waylock"
     # menu
-    # "wmenu"
+    "wmenu"
     # wallpaper manager
     "swaybg"
     # screen shot
@@ -36,10 +39,14 @@ depends=(
     "wob"
     # notification
     "libnotify"
+    # inhibit
+    "wayland-pipewire-idle-inhibit"
+    # fcitx5
+    "fcitx5" "fcitx5-chinese-addons" "fcitx5-configtool"
 )
 optdepends=(
-    "wlr-randr: outputs configure"
     "swayimg: image viewer"
+    "bat: replacement of cat"
     "mpv: video player"
     "wf-recorder: screen recorder"
     "lswt: list wayland toplevels"
@@ -49,62 +56,36 @@ optdepends=(
     "chafa: image preview support for lf"
     "poppler: pdf preview support for lf"
     "wshowkeys-mao-git: show keys on screen"
+    "wl-mirror: "
+    "pipectl: "
 )
 makedepends=(
     "gcc"
     "pkgconf"
     "wayland-protocols"
     "tllist"
-    "meson"
+    "fcft"
+    "pixman"
+    "libxkbcommon"
     "ninja"
     "zig"
 )
 
 
 build() {
-    # personal fork for wmenu
-    cd ${srcdir}
-    [ ! -d wmenu ] && git clone https://github.com/kewuaa/wmenu.git
-    cd wmenu
-    git pull
-    meson setup build --buildtype=release
-    meson compile -C build
+    [ -d "$srcdir/kwm" ] || git clone https://github.com/kewuaa/kwm "$srcdir/kwm"
+    [ -d "$srcdir/kwim" ] || git clone https://github.com/kewuaa/kwim "$srcdir/kwim"
 
-    cd ${srcdir}
-    [ ! -d dam ] && git clone https://codeberg.org/sewn/dam.git
-    cd dam
-    git pull
-    git submodule update --init --recursive
-    cp ${srcdir}/../dam_config.h config.h
-    make
-
-    cd ${srcdir}
-    [ ! -d rivercarro ] && git clone https://git.sr.ht/~novakane/rivercarro
-    cd rivercarro
-    git pull
-    zig build -Doptimize=ReleaseSafe
-
-    cd ${srcdir}
-    [ ! -d idlehack ] && git clone https://github.com/loops/idlehack.git
-    cd idlehack
-    git pull
-    make
+    cp "$srcdir/../kwm.zon" "$srcdir/kwm/config.zon"
+    cp "$srcdir/../kwim.zon" "$srcdir/kwim/config.zon"
 }
 
 
 package() {
     echo 'packaging kewuaawm'
 
-    cd ${srcdir}/wmenu
-    meson install -C build --destdir="${pkgdir}"
-
-    cd ${srcdir}/dam
-    make install DESTDIR="${pkgdir}"
-
-    cd ${srcdir}/rivercarro
-    cp -r zig-out/* "${pkgdir}/usr"
-
-    cd ${srcdir}/idlehack
-    cp idlehack "${pkgdir}/usr/bin"
-    cp swayidle-inhibit "${pkgdir}/usr/bin"
+    cd ${srcdir}/kwm
+    DESTDIR="$pkgdir" zig build install --release=safe
+    cd ${srcdir}/kwim
+    DESTDIR="$pkgdir" zig build install -Dconfig="config.zon" --release=safe
 }
