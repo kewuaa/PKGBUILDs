@@ -56,8 +56,8 @@ optdepends=(
     "chafa: image preview support for lf"
     "poppler: pdf preview support for lf"
     "wshowkeys-mao-git: show keys on screen"
-    "wl-mirror: "
-    "pipectl: "
+    "wl-mirror: a simple Wayland output mirror client"
+    "pipectl: dependency of wl-mirror"
 )
 makedepends=(
     "gcc"
