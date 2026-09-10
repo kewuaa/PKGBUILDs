@@ -43,6 +43,8 @@ depends=(
     "wayland-pipewire-idle-inhibit"
     # fcitx5
     "fcitx5" "fcitx5-chinese-addons" "fcitx5-configtool"
+    # polkit
+    "polkit" "polkit-gnome"
 )
 optdepends=(
     "swayimg: image viewer"
